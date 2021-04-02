@@ -1,24 +1,81 @@
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  // Link
+} from "react-router-dom";
+import Home from './Components/Home/Home';
+// import ProductsCard from "./ProductsCard/ProductsCard";
+import CheckOut from "./Components/CheckOut/CheckOut";
+import Admin from "./Components/Adminn/Admin";
+import Orders from "./Components/Orders/Orders";
+import AboutUs from "./Components/AboutUs/AboutUs";
+import ManageProducts from "./Components/ManageProducts/ManageProducts";
+import Login from "./Components/Login/Login";
+import { createContext, useState } from "react";
+import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
+import CheckOutConfirm from "./Components/CheckOutConfirm/CheckOutConfirm";
+import ConfirmMessege from "./Components/ConfirmMessege/ConfirmMessege";
+
+export const UserContext = createContext()
 
 function App() {
+
+  const [loggedInUser, setLoggedInUser] = useState({})
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+    <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
+
+      <div>
+        <Router>
+
+          <Switch>
+
+            <Route exact path="/">
+              <Home />
+            </Route>
+
+            <Route path="/home">
+              <Home />
+            </Route>
+
+            <Route path="/login">
+              <Login></Login>
+            </Route>
+
+            <PrivateRoute path="/checkOut/:productId">
+              <CheckOut></CheckOut>
+            </PrivateRoute>
+
+            <PrivateRoute path="/admin">
+              <Admin></Admin>
+            </PrivateRoute>
+
+            <PrivateRoute path="/orders">
+              <Orders></Orders>
+            </PrivateRoute>
+
+            <Route path="/about">
+              <AboutUs></AboutUs>
+            </Route>
+
+            <Route path="/manageProduct">
+              <ManageProducts></ManageProducts>
+            </Route>
+
+            <Route path="/confirmCheckout">
+              <CheckOutConfirm></CheckOutConfirm>
+            </Route>
+
+            <Route path="/confirmMsg">
+              <ConfirmMessege></ConfirmMessege>
+            </Route>
+
+          </Switch>
+        </Router>
+      </div>
+    </UserContext.Provider>
   );
 }
 
